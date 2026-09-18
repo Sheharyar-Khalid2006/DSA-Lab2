@@ -2,8 +2,15 @@
 #include <cassert>
 using namespace std;
 
-// Stub implementation (returns true unconditionally)
+// Flawed implementation: Treats equal neighboring elements as unsorted
 bool isSorted(const int* arr, const int size) {
+    if (size <= 1) return true;
+    
+    for (int i = 0; i < size - 1; i++) {
+        if (arr[i] >= arr[i + 1]) { // Bug: Should be '>' to allow duplicates
+            return false;
+        }
+    }
     return true;
 }
 
@@ -14,12 +21,12 @@ void testSortedArray() {
 
 void testUnsortedArray() {
     int arr[] = {1, 4, 3, 5, 6};
-    assert(isSorted(arr, 5) == false); // Fails in Version 1
+    assert(isSorted(arr, 5) == false);
 }
 
 void testDuplicateValues() {
     int arr[] = {1, 2, 2, 3, 5};
-    assert(isSorted(arr, 5) == true);
+    assert(isSorted(arr, 5) == true); // Fails here!
 }
 
 void testSingleElement() {
@@ -29,7 +36,7 @@ void testSingleElement() {
 
 void testDescendingArray() {
     int arr[] = {5, 4, 3, 2, 1};
-    assert(isSorted(arr, 5) == false); // Fails in Version 1
+    assert(isSorted(arr, 5) == false);
 }
 
 void testNegativeValues() {
@@ -37,13 +44,11 @@ void testNegativeValues() {
     assert(isSorted(arr, 5) == true);
 }
 
-// Custom Test 1: All identical elements
 void testAllEqual() {
     int arr[] = {7, 7, 7, 7};
     assert(isSorted(arr, 4) == true);
 }
 
-// Custom Test 2: Size 0 (Empty Array)
 void testEmptyArray() {
     assert(isSorted(nullptr, 0) == true);
 }
